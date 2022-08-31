@@ -45,17 +45,13 @@ namespace DgPadCMS.Areas.Admin.Controllers
                     return View();
 
                 }
-                var countChecked = 0;
-                var countUnChecked = 0;
                 foreach(var item in postTypeViewModel.taxonomies)
                 {
                     if (item.isCheked == true)
                     {
-                        countChecked++;
                     }
                     else
                     {
-                        countUnChecked++;
                     }
                 }
                 context.postTypes.Add(postTypeViewModel.PostType);
