@@ -1,0 +1,60 @@
+﻿@model PostTypeViewModel
+
+@{
+    ViewData["Title"] = "Create PostType";
+}
+
+<h1>Create a new post type</h1>
+
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PostType.Title" class="control-label"></label>
+                <input asp-for="PostType.Title" class="form-control" />
+                <span asp-validation-for="PostType.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostType.Code" class="control-label"></label>
+                <input asp-for="PostType.Code" class="form-control" />
+                <span asp-validation-for="PostType.Code" class="text-danger"></span>
+            </div>
+           <div>
+               <h4>Taxonomies</h4>
+                <ul class="list-group">
+                   @foreach (var item in Model.taxonomies)
+                   {
+                        <li class="list-group-item">
+                            <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched">
+                            <label class="form-check-label stretched-link" for="firstCheckboxStretched">@item.Name</label>
+                        </li>
+                    }
+                   
+                    
+                </ul>
+                <div class="checkbox checkboxlist col-sm9">
+                    @foreach (var item in Model.taxonomies)
+                   {
+                       <input asp-for="@item.isCheked" type="checkbox" />
+                       <label asp-for="@item.Name" >@item.Name</label>
+                       <br />
+                   }
+                </div>
+
+
+           </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
