@@ -127,6 +127,14 @@ namespace DgPadCMS.Areas.Admin.Controllers
             }
             return View(postTypeViewModel);
         }
+        public IActionResult Details(int id)
+        {
+           
+            var postType = context.postTypes.FirstOrDefault(x => x.Id == id);
+            ViewBag.selectedTaxonomies = context.postTypeTaxonomies.Where(x => x.postTypeId == id).Include(x => x.Taxonomy).ToList();
+           
+            return View(postType);
+        }
 
         public IActionResult Delete(PostType postType)
         {
