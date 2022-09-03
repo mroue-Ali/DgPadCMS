@@ -14,7 +14,8 @@ namespace DgPadCMS.Infrastructure
         public DbSet<Term> terms { get; set; }
         public DbSet<PostType> postTypes { get; set; }
         public DbSet<Post> posts { get; set; }
-
+        public DbSet<PostTerm> postTerms { get; set; }
+        public DbSet<PostTypeTaxonomy> postTypeTaxonomies { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DgPadCMS.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,7 +59,7 @@ namespace DgPadCMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostTypeTaxonomy",
+                name: "postTypeTaxonomies",
                 columns: table => new
                 {
                     postTypeId = table.Column<int>(nullable: false),
@@ -67,15 +67,15 @@ namespace DgPadCMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostTypeTaxonomy", x => new { x.postTypeId, x.taxonomyId });
+                    table.PrimaryKey("PK_postTypeTaxonomies", x => new { x.postTypeId, x.taxonomyId });
                     table.ForeignKey(
-                        name: "FK_PostTypeTaxonomy_postTypes_postTypeId",
+                        name: "FK_postTypeTaxonomies_postTypes_postTypeId",
                         column: x => x.postTypeId,
                         principalTable: "postTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostTypeTaxonomy_taxonomies_taxonomyId",
+                        name: "FK_postTypeTaxonomies_taxonomies_taxonomyId",
                         column: x => x.taxonomyId,
                         principalTable: "taxonomies",
                         principalColumn: "Id",
@@ -104,7 +104,7 @@ namespace DgPadCMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostTerm",
+                name: "postTerms",
                 columns: table => new
                 {
                     PostId = table.Column<int>(nullable: false),
@@ -112,15 +112,15 @@ namespace DgPadCMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostTerm", x => new { x.PostId, x.TermId });
+                    table.PrimaryKey("PK_postTerms", x => new { x.PostId, x.TermId });
                     table.ForeignKey(
-                        name: "FK_PostTerm_posts_PostId",
+                        name: "FK_postTerms_posts_PostId",
                         column: x => x.PostId,
                         principalTable: "posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostTerm_terms_TermId",
+                        name: "FK_postTerms_terms_TermId",
                         column: x => x.TermId,
                         principalTable: "terms",
                         principalColumn: "Id",
@@ -133,13 +133,13 @@ namespace DgPadCMS.Migrations
                 column: "PostTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostTerm_TermId",
-                table: "PostTerm",
+                name: "IX_postTerms_TermId",
+                table: "postTerms",
                 column: "TermId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostTypeTaxonomy_taxonomyId",
-                table: "PostTypeTaxonomy",
+                name: "IX_postTypeTaxonomies_taxonomyId",
+                table: "postTypeTaxonomies",
                 column: "taxonomyId");
 
             migrationBuilder.CreateIndex(
@@ -151,10 +151,10 @@ namespace DgPadCMS.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PostTerm");
+                name: "postTerms");
 
             migrationBuilder.DropTable(
-                name: "PostTypeTaxonomy");
+                name: "postTypeTaxonomies");
 
             migrationBuilder.DropTable(
                 name: "posts");

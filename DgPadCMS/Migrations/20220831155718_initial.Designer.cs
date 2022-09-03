@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DgPadCMS.Migrations
 {
     [DbContext(typeof(DgPadCMSContext))]
-    [Migration("20220827194649_initialCreate")]
-    partial class initialCreate
+    [Migration("20220831155718_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,7 +62,7 @@ namespace DgPadCMS.Migrations
 
                     b.HasIndex("TermId");
 
-                    b.ToTable("PostTerm");
+                    b.ToTable("postTerms");
                 });
 
             modelBuilder.Entity("DgPadCMS.Models.PostType", b =>
@@ -95,7 +95,7 @@ namespace DgPadCMS.Migrations
 
                     b.HasIndex("taxonomyId");
 
-                    b.ToTable("PostTypeTaxonomy");
+                    b.ToTable("postTypeTaxonomies");
                 });
 
             modelBuilder.Entity("DgPadCMS.Models.Taxonomy", b =>

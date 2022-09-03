@@ -45,10 +45,17 @@ namespace DgPadCMS.Areas.Admin.Controllers
                     return View();
 
                 }
-                foreach(var item in postTypeViewModel.taxonomies)
+                var taxonomyList = await context.taxonomies.OrderBy(x => x.Id).ToListAsync();
+                postTypeViewModel.taxonomies = taxonomyList;
+                foreach (var item in postTypeViewModel.taxonomies)
                 {
                     if (item.isCheked == true)
                     {
+                        PostTypeTaxonomy postTypeTaxonomy = new PostTypeTaxonomy();
+                        postTypeTaxonomy.postTypeId = postTypeViewModel.PostType.Id;
+                        postTypeTaxonomy.taxonomyId=item.Id;
+                        context.postTypeTaxonomies.Add(postTypeTaxonomy);
+                        await context.SaveChangesAsync();
                     }
                     else
                     {

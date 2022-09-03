@@ -60,7 +60,7 @@ namespace DgPadCMS.Migrations
 
                     b.HasIndex("TermId");
 
-                    b.ToTable("PostTerm");
+                    b.ToTable("postTerms");
                 });
 
             modelBuilder.Entity("DgPadCMS.Models.PostType", b =>
@@ -93,7 +93,7 @@ namespace DgPadCMS.Migrations
 
                     b.HasIndex("taxonomyId");
 
-                    b.ToTable("PostTypeTaxonomy");
+                    b.ToTable("postTypeTaxonomies");
                 });
 
             modelBuilder.Entity("DgPadCMS.Models.Taxonomy", b =>
