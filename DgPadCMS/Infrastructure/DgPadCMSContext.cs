@@ -1,6 +1,7 @@
 ﻿using DgPadCMS.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DgPadCMS.Infrastructure
 {
@@ -22,12 +23,11 @@ namespace DgPadCMS.Infrastructure
             modelBuilder.Entity<Term>().HasOne(x => x.taxonomy).WithMany(x => x.terms);
             modelBuilder.Entity<Post>().HasOne(x => x.postType).WithMany(x => x.posts);
             modelBuilder.Entity<PostTerm>().HasKey(x => new {x.PostId, x.TermId});
-            modelBuilder.Entity<PostTerm>().HasOne(x => x.Post).WithMany(x => x.postTerms);
-            modelBuilder.Entity<PostTerm>().HasOne(x => x.Term).WithMany(x => x.postTerms);
+            modelBuilder.Entity<PostTerm>().HasOne(x => x.Post).WithMany(x => x.postTerms).HasForeignKey(x=>x.PostId);
+            modelBuilder.Entity<PostTerm>().HasOne(x => x.Term).WithMany(x => x.postTerms).HasForeignKey(x=>x.TermId);
             modelBuilder.Entity<PostTypeTaxonomy>().HasKey(x => new { x.postTypeId, x.taxonomyId });
-            modelBuilder.Entity<PostTypeTaxonomy>().HasOne(x => x.PostType).WithMany(x => x.postTypeTaxonomies);
-            modelBuilder.Entity<PostTypeTaxonomy>().HasOne(x => x.Taxonomy).WithMany(x => x.postTypeTaxonomies);
-
+            modelBuilder.Entity<PostTypeTaxonomy>().HasOne(x => x.PostType).WithMany(x => x.postTypeTaxonomies).HasForeignKey(x=>x.postTypeId);
+            modelBuilder.Entity<PostTypeTaxonomy>().HasOne(x => x.Taxonomy).WithMany(x => x.postTypeTaxonomies).HasForeignKey(x=>x.taxonomyId);
         }
 
 

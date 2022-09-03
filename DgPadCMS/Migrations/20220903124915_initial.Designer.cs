@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DgPadCMS.Migrations
 {
     [DbContext(typeof(DgPadCMSContext))]
-    [Migration("20220831155718_initial")]
+    [Migration("20220903124915_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

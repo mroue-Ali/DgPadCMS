@@ -3,6 +3,7 @@ using DgPadCMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,50 +24,53 @@ namespace DgPadCMS.Areas.Admin.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var taxonomyList= await context.taxonomies.OrderBy(x=>x.Id).ToListAsync();
+            var taxonomyList= await context.taxonomies.ToListAsync();
             PostTypeViewModel postTypeViewModel = new PostTypeViewModel();
-            postTypeViewModel.taxonomies=taxonomyList;
+            postTypeViewModel.availabletaxonomies = taxonomyList;
+            return View(postTypeViewModel);
             
-           return View(postTypeViewModel);
         }
+
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostTypeViewModel postTypeViewModel)
+        public async Task<IActionResult> Create(PostTypeViewModel postTypeViewModel, List<int> taxonomyIdList)
         {
-
+            PostType postType = new PostType();
+            postType.Title = postTypeViewModel.Title;
+            postType.Code = postTypeViewModel.Code;
             if (ModelState.IsValid)
             {
-                var c = await context.postTypes.FirstOrDefaultAsync(x => x.Code == postTypeViewModel.PostType.Code);
+                var c = await context.postTypes.FirstOrDefaultAsync(x => x.Code == postTypeViewModel.Code);
                 if (c != null)
                 {
                     ModelState.AddModelError("", "the post type alredy exists");
 
 
-                    return View();
+                    return View(postTypeViewModel);
 
                 }
-                var taxonomyList = await context.taxonomies.OrderBy(x => x.Id).ToListAsync();
-                postTypeViewModel.taxonomies = taxonomyList;
-                foreach (var item in postTypeViewModel.taxonomies)
+
+                context.postTypes.Add(postType);
+                await context.SaveChangesAsync();
+                foreach (var taxonomy in taxonomyIdList)
                 {
-                    if (item.isCheked == true)
+                    PostTypeTaxonomy postTypeTaxonomy = new PostTypeTaxonomy()
                     {
-                        PostTypeTaxonomy postTypeTaxonomy = new PostTypeTaxonomy();
-                        postTypeTaxonomy.postTypeId = postTypeViewModel.PostType.Id;
-                        postTypeTaxonomy.taxonomyId=item.Id;
-                        context.postTypeTaxonomies.Add(postTypeTaxonomy);
-                        await context.SaveChangesAsync();
-                    }
-                    else
-                    {
-                    }
+                        taxonomyId = taxonomy,
+                        postTypeId= postType.Id,
+                    };
+
+                    context.Add(postTypeTaxonomy);
                 }
-                context.postTypes.Add(postTypeViewModel.PostType);
+
                 await context.SaveChangesAsync();
                 return RedirectToAction("Index");
+
             }
-            return View(postTypeViewModel.PostType);
+            return View(postTypeViewModel);
         }
+       
         public IActionResult Delete(PostType postType)
         {
             context.postTypes.Remove(postType);

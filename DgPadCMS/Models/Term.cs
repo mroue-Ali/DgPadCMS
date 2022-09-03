@@ -14,7 +14,7 @@ namespace DgPadCMS.Models
 
 
         public int taxonomyId { get; set; }
-        public virtual Taxonomy taxonomy { get; set; }
+        public  Taxonomy taxonomy { get; set; }
 
         public ICollection<PostTerm> postTerms { get; set; }
     }

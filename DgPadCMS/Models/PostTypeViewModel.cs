@@ -4,7 +4,9 @@ namespace DgPadCMS.Models
 {
     public class PostTypeViewModel
     {
-        public List<Taxonomy> taxonomies { get; set; }
-        public PostType PostType { get; set; }
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Title { get; set; }
+        public List<Taxonomy> availabletaxonomies { get; set; }
     }
 }
