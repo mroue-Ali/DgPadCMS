@@ -1,0 +1,46 @@
+﻿@model PostTermViewModel
+
+@{
+    ViewData["Title"] = "Create a post";
+}
+
+<h1>Create new Post</h1>
+
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Create" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+          
+            <div class="form-group">
+                <label asp-for="Post.Title" class="control-label"></label>
+                <input asp-for="Post.Title" class="form-control" />
+                <span asp-validation-for="Post.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.PostTypeId" class="control-label">PostType</label>
+                <select asp-for="Post.PostTypeId" asp-items="@ViewBag.PostTypeId" class="form-control"><option value="0">Choose a PostType</option></select>
+                <span asp-validation-for="Post.PostTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.CreationDate" class="control-label"></label>
+                <input asp-for="Post.CreationDate" class="form-control" />
+                <span asp-validation-for="Post.CreationDate" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        CKEDITOR.replace("Post.Detail");
+    </script>
+}
