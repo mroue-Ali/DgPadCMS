@@ -22,10 +22,15 @@
                 <span asp-validation-for="Post.PostTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Post.CreationDate" class="control-label"></label>
-                <input asp-for="Post.CreationDate" class="form-control" />
-                <span asp-validation-for="Post.CreationDate" class="text-danger"></span>
+               <input asp-for="Post.Detail" type="hidden" value="Detail" />
+                <span asp-validation-for="Post.Detail" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <input asp-for="Post.Summary" type="hidden" value="Summary" />
+                <span asp-validation-for="Post.Detail" class="text-danger"></span>
+            </div>
+
+          
            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

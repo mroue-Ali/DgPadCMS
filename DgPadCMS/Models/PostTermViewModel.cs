@@ -7,5 +7,6 @@ namespace DgPadCMS.Models
     {
         public Post Post { get; set; }  
         public List<Term> termsOfTaxonomies { get; set; }
+        public List<PostTypeTaxonomy> postTypeTaxonomies { get; set; }
     }
 }
