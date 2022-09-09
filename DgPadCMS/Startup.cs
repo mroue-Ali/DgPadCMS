@@ -1,7 +1,9 @@
 using DgPadCMS.Infrastructure;
+using DgPadCMS.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,9 +35,17 @@ namespace DgPadCMS
                 //options.IdleTimeout = TimeSpan.FromDays(2);
             });
 
+            services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddControllersWithViews();
             services.AddDbContext<DgPadCMSContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DgPadCMSContext")));
+            services.AddIdentity<AppUser,IdentityRole>(options => {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+            }).AddEntityFrameworkStores<DgPadCMSContext>().AddDefaultTokenProviders();
         }
 
 
@@ -58,6 +68,7 @@ namespace DgPadCMS
 
             app.UseRouting();
             app.UseSession();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -5,7 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace DgPadCMS.Infrastructure
 {
-    public class DgPadCMSContext : DbContext
+    public class DgPadCMSContext :IdentityDbContext<AppUser>
     {
         public DgPadCMSContext(DbContextOptions<DgPadCMSContext> options)
             : base(options)
