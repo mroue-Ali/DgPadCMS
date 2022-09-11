@@ -21,7 +21,7 @@
             
             <div class="form-group">
                 <label asp-for="Post.Detail" class="control-label"></label>
-                <input asp-for="Post.Detail" class="form-control" />
+                <textarea asp-for="Post.Detail" class="form-control" ></textarea>
                 <span asp-validation-for="Post.Detail" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,12 +33,30 @@
             <div>
             @foreach (var item in Model.postTypeTaxonomies)
             {
-                var t = new SelectList(item.Taxonomy.terms, "Id", "Name");
-                <div class="form-group">
+                    var t = item.Taxonomy.terms.ToList();
+                    <div class="form-group">
                 <label  class="control-label">term for @item.Taxonomy.Name</label>
-                    <select asp-items="@t "name="termIdList" class="form-control">
-                        <option hidden selected value="0">Choose a term </option>
-                    </select>
+                   
+                        <ul class="checkbox checkboxlist col-sm9">
+                            <table>
+                                @foreach (var i in t)
+                                {
+                                    <tr>
+                                        <td>
+                                            <label class="control-label">@i.Name</label>
+
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="@i.Id" name="termIdList" class="form-control" />
+
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            </table>
+
+                        </ul>
                 <span class="text-danger"></span>
             </div>
             }

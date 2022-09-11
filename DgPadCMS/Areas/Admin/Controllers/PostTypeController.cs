@@ -36,11 +36,13 @@ namespace DgPadCMS.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PostTypeViewModel postTypeViewModel, List<int> taxonomyIdList)
         {
-            PostType postType = new PostType();
-            postType.Title = postTypeViewModel.Title;
-            postType.Code = postTypeViewModel.Code;
+           
             if (ModelState.IsValid)
             {
+                postTypeViewModel.Code = postTypeViewModel.Title.ToLower().Replace(" ", "_");
+                PostType postType = new PostType();
+                postType.Title = postTypeViewModel.Title;
+                postType.Code = postTypeViewModel.Code;
                 var c = await context.postTypes.FirstOrDefaultAsync(x => x.Code == postTypeViewModel.Code);
                 if (c != null)
                 {
@@ -85,11 +87,13 @@ namespace DgPadCMS.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(PostTypeViewModel postTypeViewModel, int id, List<int> taxonomyIdList)
         {
-            var postType = await context.postTypes.FirstOrDefaultAsync(x => x.Id == id);
-            postType.Title = postTypeViewModel.Title;
-            postType.Code = postTypeViewModel.Code;
+         
             if (ModelState.IsValid)
             {
+                postTypeViewModel.Code = postTypeViewModel.Title.ToLower().Replace(" ", "_");
+                var postType = await context.postTypes.FirstOrDefaultAsync(x => x.Id == id);
+                postType.Title = postTypeViewModel.Title;
+                postType.Code = postTypeViewModel.Code;
                 var c = await context.postTypes.Where(x => x.Id != id).FirstOrDefaultAsync(x => x.Code == postTypeViewModel.Code);
                 if (c != null)
                 {

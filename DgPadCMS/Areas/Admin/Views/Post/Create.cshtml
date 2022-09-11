@@ -21,10 +21,7 @@
                 <select asp-for="Post.PostTypeId" asp-items="@ViewBag.PostTypeId" class="form-control"><option value="0">Choose a PostType</option></select>
                 <span asp-validation-for="Post.PostTypeId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-               <input asp-for="Post.Detail" type="hidden" value="Detail" />
-                <span asp-validation-for="Post.Detail" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <input asp-for="Post.Summary" type="hidden" value="Summary" />
                 <span asp-validation-for="Post.Detail" class="text-danger"></span>

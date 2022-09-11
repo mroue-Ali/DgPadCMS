@@ -34,6 +34,7 @@ namespace DgPadCMS.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                term.Code = term.Name.ToLower().Replace(" ", "_");
                 var c = await context.terms.FirstOrDefaultAsync(x => x.Code == term.Code);
                 if (c != null)
                 {
@@ -70,6 +71,8 @@ namespace DgPadCMS.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                term.Code = term.Name.ToLower().Replace(" ", "_");
+
                 var c = await context.terms.Where(x=>x.Id!=term.Id).FirstOrDefaultAsync(x => x.Code == term.Code);
                 if (c != null)
                 {

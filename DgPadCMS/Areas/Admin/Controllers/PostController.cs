@@ -18,6 +18,11 @@ namespace DgPadCMS.Areas.Admin.Controllers
         {
             this.context = context;
         }
+        public IActionResult A()
+        {
+
+            return View();
+        }
         public async Task<IActionResult> Index()
         {
             return View(await context.posts.Include(x => x.postType).ToListAsync());
@@ -59,7 +64,7 @@ namespace DgPadCMS.Areas.Admin.Controllers
             PostTermViewModel postTermViewModel = new PostTermViewModel();
             postTermViewModel.Post = context.posts.Find(id);
             int postTypeId=postTermViewModel.Post.PostTypeId;
-            postTermViewModel.postTypeTaxonomies = context.postTypeTaxonomies.Where(x => x.postTypeId == postTypeId).Include(x => x.Taxonomy).ThenInclude(x => x.terms).ToList();
+            postTermViewModel.postTypeTaxonomies = await context.postTypeTaxonomies.Where(x => x.postTypeId == postTypeId).Include(x => x.Taxonomy).ThenInclude(x => x.terms).ToListAsync();
 
             ViewBag.PostType = context.postTypes.Find(postTypeId).Title.ToString();
           

@@ -27,6 +27,9 @@ namespace DgPadCMS.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                taxonomy.Code = taxonomy.Name.ToLower().Replace(" ", "-");
+
+
                 var c = await context.taxonomies.FirstOrDefaultAsync(x => x.Code == taxonomy.Code);
                 if (c != null)
                 {
@@ -60,6 +63,8 @@ namespace DgPadCMS.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                taxonomy.Code = taxonomy.Name.ToLower().Replace(" ", "-");
+
                 var c = await context.taxonomies.Where(x => x.Id != taxonomy.Id).FirstOrDefaultAsync(x => x.Code == taxonomy.Code);
                 if (c != null)
                 {
