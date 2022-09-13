@@ -37,12 +37,14 @@ namespace DgPadCMS.Areas.Admin.Controllers
         public async Task<IActionResult> Create(PostTypeViewModel postTypeViewModel, List<int> taxonomyIdList)
         {
            
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 postTypeViewModel.Code = postTypeViewModel.Title.ToLower().Replace(" ", "_");
                 PostType postType = new PostType();
                 postType.Title = postTypeViewModel.Title;
                 postType.Code = postTypeViewModel.Code;
+                postType.ImgChecked = postTypeViewModel.ImgChecked;
+            postType.MediaChecked=postTypeViewModel.MediaChecked;
                 var c = await context.postTypes.FirstOrDefaultAsync(x => x.Code == postTypeViewModel.Code);
                 if (c != null)
                 {
@@ -69,8 +71,8 @@ namespace DgPadCMS.Areas.Admin.Controllers
                 await context.SaveChangesAsync();
                 return RedirectToAction("Index");
 
-            }
-            return View(postTypeViewModel);
+            //}
+            //return View(postTypeViewModel);
         }
         public async Task<IActionResult> Edit(int id)
         {
@@ -80,6 +82,8 @@ namespace DgPadCMS.Areas.Admin.Controllers
             postTypeViewModel.availabletaxonomies = taxonomyList;
             postTypeViewModel.Title = postType.Title;
             postTypeViewModel.Code = postType.Code;
+            postTypeViewModel.ImgChecked = postType.ImgChecked;
+            postTypeViewModel.MediaChecked = postType.MediaChecked;
             return View(postTypeViewModel);
 
         }
@@ -94,6 +98,8 @@ namespace DgPadCMS.Areas.Admin.Controllers
                 var postType = await context.postTypes.FirstOrDefaultAsync(x => x.Id == id);
                 postType.Title = postTypeViewModel.Title;
                 postType.Code = postTypeViewModel.Code;
+                postType.ImgChecked = postTypeViewModel.ImgChecked;
+                postType.MediaChecked = postTypeViewModel.MediaChecked;
                 var c = await context.postTypes.Where(x => x.Id != id).FirstOrDefaultAsync(x => x.Code == postTypeViewModel.Code);
                 if (c != null)
                 {

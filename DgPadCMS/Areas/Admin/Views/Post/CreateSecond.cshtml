@@ -6,12 +6,10 @@
 
 <h1>CreateSecond</h1>
 
-<h4>Post</h4>
-<hr />
 <div class="row">
     <div class="col-md-10">
-        <h3>Post a @ViewBag.PostType</h3>
-        <form asp-action="CreateSecond">
+        <h3>Post a @ViewBag.PostType.Title</h3>
+        <form asp-action="CreateSecond" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 
@@ -29,7 +27,24 @@
                 <input asp-for="Post.Summary" class="form-control" />
                 <span asp-validation-for="Post.Summary" class="text-danger"></span>
             </div>
-         
+            @if (@ViewBag.PostType.MediaChecked == true)
+            {
+                <div class="form-group">
+                    <label asp-for="Post.Media" class="control-label">Video</label>
+                <input asp-for="MediaUpload" class="form-control" />
+                <video width="200" height="200" id="videopreview" controls> <source src="" id="videopreview" type="video/mp4"></video>
+                <span asp-validation-for="MediaUpload" class="text-danger"></span>
+            </div>
+            }
+            @if (@ViewBag.PostType.ImgChecked == true)
+            {
+                <div class="form-group">
+                    <label asp-for="Post.Image" class="control-label">Image</label>
+                <input asp-for="ImageUpload" class="form-control" />
+                <img src="" id="imgpreview" class="pt-2" alt="" />
+                <span asp-validation-for="ImageUpload" class="text-danger"></span>
+            </div>
+            }
             <div>
             @foreach (var item in Model.postTypeTaxonomies)
             {
@@ -76,5 +91,12 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         CKEDITOR.replace("Post.Detail");
+        
+        $("#ImageUpload").change(function () {
+            readURL(this);
+        });
+        $("#MediaUpload").change(function () {
+            readuURL(this);
+        });
     </script>
 }

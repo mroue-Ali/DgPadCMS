@@ -15,7 +15,18 @@
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            
+            <div class="form-group">
+                <label class="control-label">Allow Images?</label>
+
+                <input asp-for="ImgChecked" type="checkbox"   class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label class="control-label">Allow Videos?</label>
+
+                <input asp-for="MediaChecked" type="checkbox" class="form-control" />
+
+            </div>
                <div class="form-group">
                <h4>Taxonomies</h4>
 

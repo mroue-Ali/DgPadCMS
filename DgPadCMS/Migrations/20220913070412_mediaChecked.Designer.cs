@@ -4,14 +4,16 @@ using DgPadCMS.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DgPadCMS.Migrations
 {
     [DbContext(typeof(DgPadCMSContext))]
-    partial class DgPadCMSContextModelSnapshot : ModelSnapshot
+    [Migration("20220913070412_mediaChecked")]
+    partial class mediaChecked
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

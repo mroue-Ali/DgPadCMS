@@ -4,14 +4,16 @@ using DgPadCMS.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DgPadCMS.Migrations
 {
     [DbContext(typeof(DgPadCMSContext))]
-    partial class DgPadCMSContextModelSnapshot : ModelSnapshot
+    [Migration("20220911095552_img")]
+    partial class img
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,9 +150,6 @@ namespace DgPadCMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ImgChecked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("MediaChecked")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")

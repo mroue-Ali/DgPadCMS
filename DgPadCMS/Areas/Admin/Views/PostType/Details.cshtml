@@ -18,21 +18,37 @@
         <dd class = "col-sm-10">
             @Model.Title
         </dd>
-        <div>
-        <h5>taxonomies</h5>
-            <div>
-                <table>
-                    @foreach (var item in ViewBag.selectedTaxonomies)
+        <dt class="col-sm-2">
+            ImgChecked
+
+        </dt>
+        <dd class="col-sm-10">
+            @Model.ImgChecked
+        </dd>
+        <dt class = "col-sm-2">
+            MediaChecked
+
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.MediaChecked
+        </dd>
+        
+            <dt class="col-sm-2">taxonomies</dt>
+
+        <dd class="col-sm-10">
+
+            @foreach (var item in ViewBag.selectedTaxonomies)
                     {
-                        <tr>
-                            <td>
-                                <label class="control-label">@item.Taxonomy.Name</label>
-                            </td>
-                        </tr>
-                    }
-                </table>
-             </div>
-        </div>
+
+                   
+                        <label class="control-label">@item.Taxonomy.Name</label>
+
+                        <br />
+                }
+                
+                         </dd>
+             
+        
     </dl>
 </div>
 <div>

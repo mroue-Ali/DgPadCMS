@@ -13,12 +13,24 @@ $(function () {
         }, 2000);
     }
 
-}); function readURL(input) {
+});
+function readURL(input) {
     if (input.files && input.files[0]) {
         let reader = new FileReader();
 
         reader.onload = function (e) {
             $("img#imgpreview").attr("src", e.target.result).width(200).height(200);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+function readuURL(input) {
+    if (input.files && input.files[0]) {
+        let reader = new FileReader();
+
+        reader.onload = function (e) {
+            $("video#videopreview").attr("src", e.target.result);
         };
 
         reader.readAsDataURL(input.files[0]);

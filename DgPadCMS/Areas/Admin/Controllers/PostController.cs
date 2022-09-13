@@ -1,10 +1,12 @@
 ﻿using DgPadCMS.Infrastructure;
 using DgPadCMS.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,15 +16,15 @@ namespace DgPadCMS.Areas.Admin.Controllers
     public class PostController : Controller
     {
         private readonly DgPadCMSContext context;
-        public PostController(DgPadCMSContext context)
+        private readonly IWebHostEnvironment webHostEnvironment;
+
+        public PostController(DgPadCMSContext context, IWebHostEnvironment webHostEnvironment)
         {
             this.context = context;
-        }
-        public IActionResult A()
-        {
+            this.webHostEnvironment = webHostEnvironment;
 
-            return View();
         }
+        
         public async Task<IActionResult> Index()
         {
             return View(await context.posts.Include(x => x.postType).ToListAsync());
@@ -52,12 +54,67 @@ namespace DgPadCMS.Areas.Admin.Controllers
         }
         public IActionResult CreateSecond(int id, int postID)
         {
-            ViewBag.PostType = context.postTypes.Find(id).Title.ToString();
+            ViewBag.PostType = context.postTypes.Find(id);
+            
             PostTermViewModel postTermViewModel = new PostTermViewModel();
             postTermViewModel.postTypeTaxonomies = context.postTypeTaxonomies.Where(x => x.postTypeId == id).Include(x => x.Taxonomy).ThenInclude(x => x.terms).ToList();
             postTermViewModel.Post = context.posts.Find(postID);
             return View(postTermViewModel);
 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSecond(PostTermViewModel postTermViewModel, List<int> termIdList)
+        {
+            int id = postTermViewModel.Post.Id;
+            var post = await context.posts.FindAsync(id);
+            post.Detail = postTermViewModel.Post.Detail;
+            post.Summary = postTermViewModel.Post.Summary;
+
+            //if (ModelState.IsValid)
+            //{
+               
+                string imageName = "nooimage.png";
+                if (postTermViewModel.ImageUpload != null)
+                {
+                    string uploadsDir = Path.Combine(webHostEnvironment.WebRootPath, "Media/Photos");
+                    imageName = Guid.NewGuid().ToString() + "_" + postTermViewModel.ImageUpload.FileName;
+                    string filePath = Path.Combine(uploadsDir, imageName);
+                    FileStream fs = new FileStream(filePath, FileMode.Create);
+                    await postTermViewModel.ImageUpload.CopyToAsync(fs);
+                    fs.Close();
+                }
+                string videoName = "novideo.mp4";
+                if (postTermViewModel.MediaUpload != null)
+                {
+                    string uploadsDir = Path.Combine(webHostEnvironment.WebRootPath, "Media/Videos");
+                    videoName = Guid.NewGuid().ToString() + "_" + postTermViewModel.MediaUpload.FileName;
+                    string filePath = Path.Combine(uploadsDir, videoName);
+                    FileStream fs = new FileStream(filePath, FileMode.Create);
+                    await postTermViewModel.MediaUpload.CopyToAsync(fs);
+                    fs.Close();
+                }
+                post.Media = videoName;
+                post.Image = imageName;
+                context.posts.Update(post);
+                await context.SaveChangesAsync();
+
+                foreach (var termId in termIdList)
+                {
+                    PostTerm postTerm = new PostTerm()
+                    {
+
+
+                        TermId = termId,
+                        PostId = postTermViewModel.Post.Id,
+                    };
+
+                    context.postTerms.Add(postTerm);
+                }
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            //}
+            //return View(postTermViewModel);
         }
         public async Task<IActionResult> Edit(int id)
         {
@@ -66,7 +123,7 @@ namespace DgPadCMS.Areas.Admin.Controllers
             int postTypeId=postTermViewModel.Post.PostTypeId;
             postTermViewModel.postTypeTaxonomies = await context.postTypeTaxonomies.Where(x => x.postTypeId == postTypeId).Include(x => x.Taxonomy).ThenInclude(x => x.terms).ToListAsync();
 
-            ViewBag.PostType = context.postTypes.Find(postTypeId).Title.ToString();
+            ViewBag.PostType = context.postTypes.Find(postTypeId);
           
             return View(postTermViewModel);
         }
@@ -79,10 +136,57 @@ namespace DgPadCMS.Areas.Admin.Controllers
             post.Detail = postTermViewModel.Post.Detail;
             post.Title = postTermViewModel.Post.Title;
             post.Summary = postTermViewModel.Post.Summary;
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
 
-                context.posts.Update(post);
+            if (postTermViewModel.ImageUpload != null)
+            {
+                string uploadsDir = Path.Combine(webHostEnvironment.WebRootPath, "Media/Photos");
+
+                if (!string.Equals(post.Image, "nooimage.png"))
+                {
+                    string oldImagePath = Path.Combine(uploadsDir, post.Image);
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
+                string imageName = Guid.NewGuid().ToString() + "_" + postTermViewModel.ImageUpload.FileName;
+                string filePath = Path.Combine(uploadsDir, imageName);
+                FileStream fs = new FileStream(filePath, FileMode.Create);
+                await postTermViewModel.ImageUpload.CopyToAsync(fs);
+                fs.Close();
+                post.Image = imageName;
+            }
+
+
+
+           if (postTermViewModel.MediaUpload != null)
+            {
+                string uploadsDir = Path.Combine(webHostEnvironment.WebRootPath, "Media/Videos");
+
+                if (!string.Equals(post.Media, "novideo.mp4"))
+                {
+                    string oldMediaPath = Path.Combine(uploadsDir, post.Media);
+                    if (System.IO.File.Exists(oldMediaPath))
+                    {
+                        System.IO.File.Delete(oldMediaPath);
+                    }
+                }
+
+                string MediaName = Guid.NewGuid().ToString() + "_" + postTermViewModel.MediaUpload.FileName;
+                string filePath = Path.Combine(uploadsDir, MediaName);
+                FileStream fs = new FileStream(filePath, FileMode.Create);
+                await postTermViewModel.MediaUpload.CopyToAsync(fs);
+                fs.Close();
+                post.Media = MediaName;
+            }
+
+
+
+
+            context.posts.Update(post);
                 await context.SaveChangesAsync();
                 var pt = context.postTerms.Where(x => x.PostId == post.Id).ToList();
                 foreach (var item in pt)
@@ -94,8 +198,6 @@ namespace DgPadCMS.Areas.Admin.Controllers
                 {
                     PostTerm postTerm = new PostTerm()
                     {
-
-
                         TermId = termId,
                         PostId = postTermViewModel.Post.Id,
                     };
@@ -104,41 +206,10 @@ namespace DgPadCMS.Areas.Admin.Controllers
                 }
                 await context.SaveChangesAsync();
                 return RedirectToAction("Index");
-            }
-            return View(postTermViewModel.Post);
+            //}
+            //return View(postTermViewModel.Post);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateSecond(PostTermViewModel postTermViewModel, List<int> termIdList)
-        {
-            int id=postTermViewModel.Post.Id;
-          var post = await context.posts.FindAsync(id);
-           post.Detail = postTermViewModel.Post.Detail;
-
-           post.Summary = postTermViewModel.Post.Summary;
-            if (ModelState.IsValid)
-            {
-
-                context.posts.Update(post);
-                await context.SaveChangesAsync();
-
-                foreach (var termId in termIdList)
-                {
-                    PostTerm postTerm = new PostTerm()
-                    {
-
-                                            
-                        TermId = termId,
-                        PostId = postTermViewModel.Post.Id,
-                    };
-
-                    context.postTerms.Add(postTerm);
-                }
-                await context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(postTermViewModel.Post);
-        }
+      
         public IActionResult Details(int id)
         {
 
@@ -147,14 +218,33 @@ namespace DgPadCMS.Areas.Admin.Controllers
 
             return View(post);
         }
-        public IActionResult Delete(Post post)
+        public IActionResult Delete(int id)
         {
+            var post = context.posts.Find(id);
             var pt=context.postTerms.Where(x => x.PostId == post.Id).ToList();
             foreach(var item in pt)
             {
                 context.postTerms.Remove(item);
             }
             context.SaveChanges();
+            if (!string.Equals(post.Image, "nooimage.png"))
+            {
+                string uploadsDir = Path.Combine(webHostEnvironment.WebRootPath, "media/Photos");
+                string oldImagePath = Path.Combine(uploadsDir, post.Image);
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+            if (!string.Equals(post.Media, "novideo.mp4"))
+            {
+                string uploadsDir = Path.Combine(webHostEnvironment.WebRootPath, "media/Videos");
+                string oldMediaPath = Path.Combine(uploadsDir, post.Media);
+                if (System.IO.File.Exists(oldMediaPath))
+                {
+                    System.IO.File.Delete(oldMediaPath);
+                }
+            }
             context.posts.Remove(post);
             context.SaveChanges();
             return RedirectToAction("index");
