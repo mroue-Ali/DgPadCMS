@@ -1,0 +1,87 @@
+﻿@using DgPadCMS.Models
+@model IEnumerable<Post>
+
+@{
+
+}
+    
+
+    <div class=" d-flex justify-content-center " data-aos="fade-down"
+         data-aos-anchor-placement="center-center" style="margin-bottom:2%">
+
+        <p>
+            <h1>Welcome To the DgPad News Website!</h1>
+        </p>
+
+    </div>
+
+
+
+
+    <section id="testimonials" class="testimonials section-bg">
+        <div data-aos="zoom-in-up" data-aos-easing="ease-out-cubic"
+             data-aos-duration="1000">
+
+            <div class="section-header">
+                <h2>What happened today?</h2>
+                <p>RECENT <span>NEWS</span></p>
+            </div>
+
+            <div class="slides-1 swiper" >
+                <div class="swiper-wrapper">
+                    @foreach (var item in Model)
+                    {
+
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <div class="row gy-4 justify-content-center">
+                                    <div class="col-lg-6">
+                                        <div class="testimonial-content">
+                                            <p>
+                                                <i class="bi bi-quote quote-icon-left"></i>
+                                                @Html.Raw(item.Detail)
+                                                <i class="bi bi-quote quote-icon-right"></i>
+                                            </p>
+                                            <h3>@item.Title</h3>
+                                            <h4>@item.Summary</h4>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 text-center">
+                                        <img src="/DgPadCMS/wwwroot/media/photos/@item.Image" class="img-fluid " alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- End testimonial item -->
+                    }
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+    </section><!-- End Testimonials Section -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
