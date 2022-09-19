@@ -51,6 +51,7 @@
         <dd class="col-sm-10">
             @if (Model.Media != "novideo.mp4"){
                 <video width="200" height="200" controls> <source src="~/Media/Videos/@Model.Media" type="video/mp4"></video>
+                
             }
             @if (Model.Media == "novideo.mp4")
             {

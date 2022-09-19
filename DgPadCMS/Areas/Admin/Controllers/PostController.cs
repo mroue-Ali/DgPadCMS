@@ -24,7 +24,7 @@ namespace DgPadCMS.Areas.Admin.Controllers
             this.webHostEnvironment = webHostEnvironment;
 
         }
-        
+      
         public async Task<IActionResult> Index()
         {
             return View(await context.posts.Include(x => x.postType).ToListAsync());

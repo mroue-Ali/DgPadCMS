@@ -18,52 +18,36 @@
 
 
 
-    <section id="testimonials" class="testimonials section-bg">
-        <div data-aos="zoom-in-up" data-aos-easing="ease-out-cubic"
-             data-aos-duration="1000">
+<section id="events" class="events">
+    <div class="container-fluid" data-aos="fade-up">
 
-            <div class="section-header">
-                <h2>What happened today?</h2>
-                <p>RECENT <span>NEWS</span></p>
-            </div>
-
-            <div class="slides-1 swiper" >
-                <div class="swiper-wrapper">
-                    @foreach (var item in Model)
-                    {
-
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-                                <div class="row gy-4 justify-content-center">
-                                    <div class="col-lg-6">
-                                        <div class="testimonial-content">
-                                            <p>
-                                                <i class="bi bi-quote quote-icon-left"></i>
-                                                @Html.Raw(item.Detail)
-                                                <i class="bi bi-quote quote-icon-right"></i>
-                                            </p>
-                                            <h3>@item.Title</h3>
-                                            <h4>@item.Summary</h4>
-
-
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 text-center">
-                                        <img src="/DgPadCMS/wwwroot/media/photos/@item.Image" class="img-fluid " alt="" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- End testimonial item -->
-                    }
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-
+        <div class="section-header">
+            <h2>What happened today?</h2>
+            <p>RECENT <span>NEWS</span></p>
         </div>
-    </section><!-- End Testimonials Section -->
+
+        <div class="slides-3 swiper" data-aos="fade-up" data-aos-delay="100">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model)
+                {
+                    <a asp-controller="Post" asp-action="Detail" asp-route-id="@item.Id" class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(DgPadCMS/wwwroot/media/photos/@item.Image)" >
+                        <div >
+                    <h4>@item.CreationDate</h4>
+                    <div class="price align-self-start">@item.Title</div>
+                    <p class="description">
+                        @item.Summary
+                    </p>
+                        </div><!-- End Event item -->
+                    </a>
+                }
+               
+
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+
+    </div>
+</section><!-- End Events Section -->
 
 
 

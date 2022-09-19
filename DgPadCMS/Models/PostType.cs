@@ -11,7 +11,6 @@ namespace DgPadCMS.Models
         public string Title { get; set; }
         public ICollection<PostTypeTaxonomy> postTypeTaxonomies { get; set; }
         public ICollection<Post> posts { get; set; }
-        public bool ImgChecked { get; set; }
         public bool MediaChecked { get; set; }
     }
 }

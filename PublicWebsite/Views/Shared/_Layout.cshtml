@@ -24,6 +24,7 @@
     <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" >
 
     <!-- Template Main CSS File -->
     <link href="~/assets/css/main.css" rel="stylesheet">
@@ -60,7 +61,6 @@
 
                     }
                    
-                   
                 </ul>
             </nav><!-- .navbar -->
 
@@ -71,7 +71,7 @@
 
         
     </header><!-- End Header -->
-    <div class="breadcrumbs fixed-top">
+    <div class="breadcrumbs ">
         <div class="container">
             @{
                 var postsSummaries = await _context.posts.ToListAsync();
@@ -82,7 +82,7 @@
                     <ol>
                         @foreach (var item in postsSummaries)
                         {
-                            <li>@item.Summary   </li>
+                            <li>@item.Summary  </li>
 
                         }
 
@@ -95,7 +95,7 @@
     
 
     <main id="main">
-        <section class="sample-page " style="margin-top:5%">
+        <section class="sample-page " >
         @RenderBody()
 
         </section>

@@ -43,7 +43,6 @@ namespace DgPadCMS.Areas.Admin.Controllers
                 PostType postType = new PostType();
                 postType.Title = postTypeViewModel.Title;
                 postType.Code = postTypeViewModel.Code;
-                postType.ImgChecked = postTypeViewModel.ImgChecked;
             postType.MediaChecked=postTypeViewModel.MediaChecked;
                 var c = await context.postTypes.FirstOrDefaultAsync(x => x.Code == postTypeViewModel.Code);
                 if (c != null)
@@ -82,7 +81,6 @@ namespace DgPadCMS.Areas.Admin.Controllers
             postTypeViewModel.availabletaxonomies = taxonomyList;
             postTypeViewModel.Title = postType.Title;
             postTypeViewModel.Code = postType.Code;
-            postTypeViewModel.ImgChecked = postType.ImgChecked;
             postTypeViewModel.MediaChecked = postType.MediaChecked;
             return View(postTypeViewModel);
 
@@ -98,7 +96,6 @@ namespace DgPadCMS.Areas.Admin.Controllers
                 var postType = await context.postTypes.FirstOrDefaultAsync(x => x.Id == id);
                 postType.Title = postTypeViewModel.Title;
                 postType.Code = postTypeViewModel.Code;
-                postType.ImgChecked = postTypeViewModel.ImgChecked;
                 postType.MediaChecked = postTypeViewModel.MediaChecked;
                 var c = await context.postTypes.Where(x => x.Id != id).FirstOrDefaultAsync(x => x.Code == postTypeViewModel.Code);
                 if (c != null)
@@ -148,6 +145,13 @@ namespace DgPadCMS.Areas.Admin.Controllers
 
         public IActionResult Delete(PostType postType)
         {
+            var ttt =  context.postTypeTaxonomies.Where(x => x.postTypeId == postType.Id).ToList();
+            foreach (var item in ttt)
+            {
+                context.postTypeTaxonomies.Remove(item);
+
+            }
+            context.SaveChanges();
             context.postTypes.Remove(postType);
             context.SaveChanges();
             return RedirectToAction("index");
