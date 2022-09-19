@@ -1,4 +1,5 @@
 ﻿using DgPadCMS.Infrastructure;
+using DgPadCMS.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,10 +28,14 @@ namespace PublicWebsite.Controllers
 
             //var todaysPosts = context.posts.Include(x=>x.postType).Where(x => x.CreationDate.Day == DateTime.Today.Day).ToList();
             var recentPosts = context.posts.Include(x=>x.postType).OrderByDescending(x=>x.CreationDate).ToList();
+            var recentSixPosts = new List<Post>();
+           for(int i = 0; i < 6; i++)
+            {
+                recentSixPosts.Add(recentPosts[i]);
+            }
 
 
-
-            return View( recentPosts);
+            return View( recentSixPosts);
         }
 
 

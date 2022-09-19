@@ -24,8 +24,8 @@
     <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" >
 
+    <link rel="stylesheet" href="src/css/ideabox-news-ticker.min.css">
     <!-- Template Main CSS File -->
     <link href="~/assets/css/main.css" rel="stylesheet">
 
@@ -64,29 +64,34 @@
                 </ul>
             </nav><!-- .navbar -->
 
-            <a class="btn-book-a-table" href="#book-a-table">Login</a>
-            
+            <a   class="btn-book-a-table" href="#">Login</a>
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
         </div>
 
         
     </header><!-- End Header -->
-    <div class="breadcrumbs ">
+
+
+    
+
+    <div class="breadcrumbs " >
         <div class="container">
             @{
                 var postsSummaries = await _context.posts.ToListAsync();
             }
             <div class="d-flex justify-content-between align-items-center">
-                <h2>DgPadNEWS</h2>
+                <h2 style="padding-right:3%">DgPadNEWS</h2>
                 <marquee class="news-scroll" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
-                    <ol>
+                   
                         @foreach (var item in postsSummaries)
                         {
-                            <li>@item.Summary  </li>
-
+                            @item.Summary  
+                            <span>/</span>
                         }
-
-                    </ol>
+                   
+                    
                 </marquee>
             </div>
 
@@ -143,7 +148,11 @@
 
     <div id="preloader"></div>
 
+    <script src="src/js/ideabox-news-ticker.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <!-- Vendor JS Files -->
+
     <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/vendor/aos/aos.js"></script>
     <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>
